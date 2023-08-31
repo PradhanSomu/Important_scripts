@@ -1,0 +1,17 @@
+import psutil
+import time
+import csv
+
+def monitor_memory_usage():
+    with open('memory_usage.csv', 'w', newline='') as csvfile:
+        fieldnames = ['Timestamp', 'Memory Usage (MB)']
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        writer.writeheader()
+
+        while True:
+            memory_usage_mb = psutil.virtual_memory().used / 1024 / 1024
+            timestamp = time.time()
+            writer.writerow({'Timestamp': timestamp, 'Memory Usage (MB)': memory_usage_mb})
+            time.sleep(10)  # Sleep for 10 seconds before taking the next measurement
+
+monitor_memory_usage()
